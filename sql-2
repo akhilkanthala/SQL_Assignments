@@ -1,0 +1,102 @@
+
+1.
+
+SELECT count(*) FROM film f 
+JOIN film_category fc ON fc.film_id=f.film_id
+JOIN category c ON c.category_id=fc.category_id
+where c.name='Documentary' and f.special_features like '%Deleted Scenes%';
+
+answer:
+
++----------+
+| count(*) |
++----------+
+|       34 |
++----------+
+1 row in set (0.00 sec)
+
+
+-----------------------
+2.
+
+SELECT count(*) No_Of_SciFi_Movies FROM film f 
+JOIN film_category fc ON fc.film_id=f.film_id
+JOIN category c ON c.category_id=fc.category_id
+JOIN inventory i ON f.film_id=i.film_id
+JOIN rental r ON r.inventory_id=i.inventory_id
+JOIN staff s ON s.staff_id=r.staff_id
+WHERE s.first_name='Jon' and s.last_name='Stephens' and c.name='Sci-Fi';
+
+answer:
+
++--------------------+
+| No_Of_SciFi_Movies |
++--------------------+
+|                548 |
++--------------------+
+1 row in set (0.01 sec)
+
+------------------------
+
+3.
+
+SELECT SUM(p.amount) Total_Sales FROM film f 
+JOIN film_category fc ON fc.film_id=f.film_id
+JOIN category c ON c.category_id=fc.category_id
+JOIN inventory i ON f.film_id=i.film_id
+JOIN rental r ON r.inventory_id=i.inventory_id
+JOIN payment p ON p.rental_id=r.rental_id
+WHERE c.name='Animation';
+
+answer:
+
++-------------+
+| sum(amount) |
++-------------+
+|     4656.30 |
++-------------+
+1 row in set (0.01 sec)
+
+
+------------------------
+4.
+
+
+Select category, count(category) count from film_list fl
+JOIN inventory i ON i.film_id=fl.FID
+JOIN rental r ON r.inventory_id=i.inventory_id
+JOIN customer c ON c.customer_id=r.customer_id
+WHERE c.first_name='PATRICIA' AND c.last_name='JOHNSON' GROUP BY category ORDER BY COUNT(category) DESC LIMIT 3;
+
+answer:
++-----------+----------+
+| category  | count    |
++-----------+----------+
+| Sports    |        5 |
+| Classics  |        4 |
+| Animation |        3 |
++-----------+----------+
+3 rows in set (0.03 sec)
+
+
+
+-------------------------
+
+5.
+
+SELECT count(*) No_Of_Rented_Movies  FROM film f
+JOIN inventory i ON f.film_id=i.film_id
+JOIN rental r ON r.inventory_id=i.inventory_id
+JOIN customer c ON c.customer_id=r.customer_id
+WHERE f.rating='R' and c.first_name='SUSAN' and c.last_name='WILSON'
+
+answer:
+
++---------------------+
+| No_Of_Rented_Movies |
++---------------------+
+|                   3 |
++---------------------+
+1 row in set (0.00 sec)
+
+

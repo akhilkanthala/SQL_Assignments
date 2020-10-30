@@ -1,0 +1,108 @@
+
+1.
+
+SELECT title FROM film f
+JOIN film_category fc ON f.film_id=fc.film_id
+JOIN category c ON c.category_id=fc.category_id
+WHERE c.name='Comedy' AND f.rating='PG-13';
+
+answer:
+
++-------------------------+
+| title                   |
++-------------------------+
+| AIRPLANE SIERRA         |
+| ANTHEM LUKE             |
+| FLINTSTONES HAPPINESS   |
+| FREEDOM CLEOPATRA       |
+| GROUNDHOG UNCUT         |
+| KNOCK WARLOCK           |
+| PARADISE SABRINA        |
+| PERFECT GROOVE          |
+| RUSHMORE MERMAID        |
+| SADDLE ANTITRUST        |
+| STRICTLY SCARFACE       |
+| TRAINSPOTTING STRANGERS |
++-------------------------+
+12 rows in set (0.00 sec)
+
+--------------------------------------------------
+2.
+
+SELECT title  FROM film f 
+JOIN inventory i ON f.film_id=i.film_id
+JOIN rental r ON r.inventory_id=i.inventory_id
+JOIN film_category fc ON fc.film_id=f.film_id
+JOIN category c ON c.category_id=fc.category_id
+WHERE c.name='horror' GROUP BY title
+ORDER BY COUNT(title) DESC LIMIT 3;
+answer:
+
++--------------+
+| title        |
++--------------+
+| SWARM GOLD   |
+| PULP BEVERLY |
+| FAMILY SWEET |
++--------------+
+
+---------------------------------------------
+
+3.
+
+SELECT distinct  cust.*  FROM film f
+JOIN inventory i ON f.film_id=i.film_id
+JOIN rental r ON r.inventory_id=i.inventory_id
+JOIN film_category fc ON fc.film_id=f.film_id
+JOIN category c ON c.category_id=fc.category_id
+JOIN customer cust ON cust.customer_id=r.customer_id
+JOIN  address a ON cust.address_id=a.address_id
+JOIN city ON a.city_id=city.city_id
+JOIN country ON city.country_id=country.country_id
+WHERE c.name='sports' and country.country='India';
+answer:
+
+(returned 50 rows in result set)
+----------------------------------------------
+4.
+
+
+SELECT distinct cust.*  FROM film f
+JOIN inventory i ON f.film_id=i.film_id
+JOIN rental r ON r.inventory_id=i.inventory_id
+JOIN customer cust ON cust.customer_id=r.customer_id
+JOIN address a ON cust.address_id=a.address_id
+JOIN city ON a.city_id=city.city_id
+JOIN country ON city.country_id=country.country_id
+JOIN film_actor fa ON fa.film_id=f.film_id
+JOIN actor ON actor.actor_id=fa.actor_id
+where country.country='Canada' and actor.first_name='NICK' and actor.last_name='WAHLBERG';
+
+answer:
+
++-------------+----------+------------+-----------+--------------------------------------+------------+--------+---------------------+---------------------+
+| customer_id | store_id | first_name | last_name | email                                | address_id | active | create_date         | last_update         |
++-------------+----------+------------+-----------+--------------------------------------+------------+--------+---------------------+---------------------+
+|         189 |        1 | LORETTA    | CARPENTER | LORETTA.CARPENTER@sakilacustomer.org |        193 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|         463 |        2 | DARRELL    | POWER     | DARRELL.POWER@sakilacustomer.org     |        468 |      1 | 2006-02-14 22:04:37 | 2006-02-15 04:57:20 |
++-------------+----------+------------+-----------+--------------------------------------+------------+--------+---------------------+---------------------+
+2 rows in set (0.01 sec)
+
+
+------------------------------------------------
+
+5.
+
+SELECT count(title) AS no_of_movies FROM film f 
+JOIN  film_actor fa ON f.film_id=fa.film_id  
+JOIN actor a ON a.actor_id=fa.actor_id  
+WHERE a.first_name='SEAN' AND a.last_name='WILLIAMS';
+
+answer:
+
++----------+
+| count(*) |
++----------+
+|       26 |
++----------+
+
